@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: API-GATEWAY
+  config:
+    import: optional:configserver:http://localhost:8086
+  reactor:
+    context-propagation: auto
+    debug-agent:
+      enabled: true
+  cloud:
+    gateway:
+      httpclient:
+        wiretap: true
+        httpserver:
+          wiretap: true
+      routes:
+        - id: USER-LOGIN-SERVICE
+          uri: lb://USER-LOGIN
+          predicates:
+            - Path=/userlogin/**
+        - id: USER-REGISTRATION-SERVICE
+          uri: lb://USER-REGISTRATION
+          predicates:
+            - Path=/userregistration/**
+        - id: DISTICT-SERVICE
+          uri: lb://DISTRICT
+          predicates:
+            - Path=/district/**
+        - id: STATE-SERVICE
+          uri: lb://STATE
+          predicates:
+            - Path=/state/**
+        - id: COUNTRY-SERVICE
+          uri: lb://COUNTRY
+          predicates:
+            - Path=/country/**
+        - id: ADDRESS-SERVICE
+          uri: lb://ADDRESS
+          predicates:
+            - Path=/address/**
+        - id: EMPLOYEE-SERVICE
+          uri: lb://EMPLOYEE
+          predicates:
+            - Path=/employee/**
+        - id: DEPARTMENT-SERVICE
+          uri: lb://DEPARTMENT
+          predicates:
+            - Path=/department/**
+#eureka:
+  #instance:
+    #prefer-ip-address: true
+  #client:
+    #fetch-registry: true
+    #register-with-eureka: true
+    #service-url:
+      #defaultZone: http://localhost:8080/eureka
+server:
+  port: 8083
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:8080/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
