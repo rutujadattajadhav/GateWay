@@ -46,6 +46,10 @@ spring:
           uri: lb://DEPARTMENT
           predicates:
             - Path=/department/**
+        - id: SHOP-RESISTRATION-SERVICE
+          uri: lb://SHOP-RESISTRATION
+          predicates:
+            - Path=/shopresistration/**    -
 #eureka:
   #instance:
     #prefer-ip-address: true
